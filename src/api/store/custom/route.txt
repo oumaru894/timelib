@@ -1,0 +1,44 @@
+// MyStore/src/api/store/custom/route.ts
+
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+
+export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
+  const {
+    billing_address,
+    shipping_address,
+  } = req.body;
+
+  // Check required fields (this replaces Medusa’s strict validator)
+  if (
+    !shipping_address?.first_name ||
+    !shipping_address?.address_1 ||
+    !shipping_address?.phone
+  ) {
+    return res.status(400).json({
+      message: "Shipping address must include first_name, address_1, and phone",
+    });
+  }
+
+  if (
+    !billing_address?.first_name ||
+    !billing_address?.address_1 ||
+    !billing_address?.phone
+  ) {
+    return res.status(400).json({
+      message: "Billing address must include first_name, address_1, and phone",
+    });
+  }
+
+  // Proceed to save or update cart (this is where you add your logic)
+  return res.status(200).json({
+    message: "Addresses received successfully.",
+    shipping_address,
+    billing_address,
+  });
+};
+
+
+
+
+
+

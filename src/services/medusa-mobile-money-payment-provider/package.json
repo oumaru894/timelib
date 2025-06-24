@@ -1,0 +1,26 @@
+{
+  "name": "medusa-mobile-money-payment-provider",
+  "version": "1.0.0",
+  "description": "A mobile money payment provider for Medusa.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "keywords": [
+    "medusa",
+    "payment",
+    "mobile-money"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "@medusajs/medusa": "^1.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.0.0",
+    "jest": "^27.0.0",
+    "ts-jest": "^27.0.0",
+    "@types/jest": "^27.0.0"
+  }
+}
