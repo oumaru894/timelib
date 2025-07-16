@@ -3,6 +3,7 @@
 .env.template
 .env.local
 .DS_Store
+.env.test
 /uploads
 /node_modules
 yarn-error.log
