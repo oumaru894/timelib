@@ -13,12 +13,14 @@ export default defineConfig({
       jwtSecret: process.env.JWT_SECRET || "supersecret",
       cookieSecret: process.env.COOKIE_SECRET || "supersecret",
     },
+    
   },
+  
 
   plugins: [
 
     {
-      resolve: path.join(__dirname, "src", "modules", "medusa-cod-payment-provider"),
+      resolve: "./src/modules/medusa-cod-payment-provider",
       options: {}
     }
   ],
