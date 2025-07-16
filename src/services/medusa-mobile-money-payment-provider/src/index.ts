@@ -1,4 +1,4 @@
-import { PaymentProvider } from "@medusajs/medusa";
+//import { PaymentProvider } from "@medusajs/medusa";
 import MobileMoneyPaymentProvider from "./mobile-money-payment-provider";
 
 export default {
@@ -6,4 +6,5 @@ export default {
   options: {
     // Add any default options for the provider here
   },
-} as PaymentProvider;
+}
+

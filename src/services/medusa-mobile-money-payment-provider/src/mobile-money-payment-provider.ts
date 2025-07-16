@@ -1,27 +1,29 @@
 class MobileMoneyPaymentProvider {
-  constructor(options) {
+  options: any; // or type it properly if you know the shape
+
+  constructor(options: any) {
     this.options = options;
   }
 
   async initialize() {
-    // Initialization logic for the mobile money payment provider
+    // Initialization logic
   }
 
-  async createPayment(data) {
+  async createPayment(data: any) {
     // Logic to create a payment
   }
 
-  async confirmPayment(paymentId) {
+  async confirmPayment(paymentId: string) {
     // Logic to confirm a payment
   }
 
-  async refundPayment(paymentId) {
+  async refundPayment(paymentId: string) {
     // Logic to refund a payment
   }
 
   getPaymentOptions() {
     return {
-      provider: 'mobile-money',
+      provider: "mobile-money",
       options: this.options,
     };
   }
