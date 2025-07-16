@@ -20,7 +20,7 @@ export default defineConfig({
   plugins: [
 
     {
-      resolve: "./src/modules/medusa-cod-payment-provider",
+      resolve: "file:src/modules/medusa-cod-payment-provider",
       options: {}
     }
   ],
