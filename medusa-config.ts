@@ -17,13 +17,7 @@ export default defineConfig({
   },
   
 
-  plugins: [
-
-    {
-      resolve: "file:src/modules/medusa-cod-payment-provider",
-      options: {}
-    }
-  ],
+  
 
  // ...existing code...
 
