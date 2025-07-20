@@ -6,9 +6,7 @@ loadEnv(process.env.NODE_ENV || 'production', process.cwd())
 export default defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
-    admin: {
-      serve: false,
-    },
+    
     http: {
       storeCors: process.env.STORE_CORS!,
       adminCors: process.env.ADMIN_CORS!,
