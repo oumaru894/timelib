@@ -7,7 +7,7 @@ export default defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
     admin: {
-      serve: true,
+      serve: false,
     },
     http: {
       storeCors: process.env.STORE_CORS!,
