@@ -4,6 +4,11 @@ import path from "path"
 loadEnv(process.env.NODE_ENV || 'production', process.cwd())
 
 export default defineConfig({
+
+  admin: {
+    disable: process.env.ADMIN_DISABLED === "true" ||
+      false,
+  },
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
     databaseDriverOptions: process.env.NODE_ENV !== "development" ?

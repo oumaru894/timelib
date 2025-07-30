@@ -25,5 +25,10 @@ build
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+.yarnrc.yml
+
 
 .medusa
+
+
+
