@@ -60,8 +60,9 @@ export default defineConfig({
               additional_client_config: {
                 forcePathStyle: true,
 
+              },
             },
-          },
+          }
         ],
       },
     },
