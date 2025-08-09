@@ -57,6 +57,8 @@ export default defineConfig({
               region: process.env.MINIO_REGION,
               bucket: process.env.MINIO_BUCKET,
               endpoint: process.env.MINIO_ENDPOINT,
+              prefix: "TimeLib",
+              download_file_duration:3600, // 1 hour
               additional_client_config: {
                 forcePathStyle: true,
 
