@@ -5,7 +5,7 @@ loadEnv(process.env.NODE_ENV || "production", process.cwd())
 
 export default defineConfig({
   admin: {
-    disable: process.env.ADMIN_DISABLED === "true" || false,
+    disable: process.env.DISABLE_MEDUSA_ADMIN === "true" || false,
     backendUrl: process.env.MEDUSA_BACKEND_URL,
   },
   projectConfig: {
@@ -17,9 +17,7 @@ export default defineConfig({
     workerMode: (process.env.MEDUSA_WORKER_MODE as "shared" | "worker" | "server") || "shared",
     redisUrl: process.env.REDIS_URL,
 
-    cookieOptions: {
-      secure: process.env.NODE_ENV === "production", // HTTPS only in prod
-    },
+   
 
     http: {
       storeCors: process.env.STORE_CORS || "*",
