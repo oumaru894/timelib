@@ -1,46 +1,45 @@
-import { loadEnv, defineConfig } from '@medusajs/framework/utils'
+import { loadEnv, defineConfig } from "@medusajs/framework/utils"
 import path from "path"
 
-loadEnv(process.env.NODE_ENV || 'production', process.cwd())
+loadEnv(process.env.NODE_ENV || "production", process.cwd())
 
 export default defineConfig({
-
   admin: {
-    disable: process.env.ADMIN_DISABLED === "true" ||
-      false,
+    disable: process.env.ADMIN_DISABLED === "true" || false,
     backendUrl: process.env.MEDUSA_BACKEND_URL,
   },
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
-    databaseDriverOptions: process.env.NODE_ENV !== "development" ?
-      { connection: { ssl: { rejectUnauthorized: false } } } : {},
-    workerMode: process.env.MEDUSA_WORKER_MODE as "shared" | "worker" | "server",
+    databaseDriverOptions:
+      process.env.NODE_ENV !== "development"
+        ? { connection: { ssl: { rejectUnauthorized: false } } }
+        : {},
+    workerMode: (process.env.MEDUSA_WORKER_MODE as "shared" | "worker" | "server") || "shared",
     redisUrl: process.env.REDIS_URL,
-    /* cookieOptions: {
-      secure: "boolean",
-    }, */
 
-    
+    cookieOptions: {
+      secure: process.env.NODE_ENV === "production", // HTTPS only in prod
+    },
+
     http: {
-      storeCors: process.env.STORE_CORS!,
-      adminCors: process.env.ADMIN_CORS!,
-      authCors: process.env.AUTH_CORS!,
+      storeCors: process.env.STORE_CORS || "*",
+      adminCors: process.env.ADMIN_CORS || "*",
+      authCors: process.env.AUTH_CORS || "*",
       jwtSecret: process.env.JWT_SECRET,
       jwtExpiresIn: process.env.JWT_EXPIRES_IN || "30d",
       cookieSecret: process.env.COOKIE_SECRET,
       authMethodsPerActor: {
         user: ["emailpass"],
-        customer: ["emailpass", "google"],
+        customer: ["emailpass", "google"], // Add more OAuth if needed
       },
-    
     },
   },
-  
+
   modules: [
     {
       resolve: "@medusajs/medusa/cache-redis",
       options: {
-        redisUrl: process.env.CACHE_REDIS_URL,
+        redisUrl: process.env.CACHE_REDIS_URL || process.env.REDIS_URL,
       },
     },
     {
@@ -58,20 +57,14 @@ export default defineConfig({
               bucket: process.env.MINIO_BUCKET,
               endpoint: process.env.MINIO_ENDPOINT,
               prefix: "TimeLib",
-              download_file_duration:3600, // 1 hour
+              download_file_duration: 3600, // 1 hour
               additional_client_config: {
                 forcePathStyle: true,
-
               },
             },
-          }
+          },
         ],
       },
     },
   ],
-  
- // ...existing code...
-
-
-
 })
