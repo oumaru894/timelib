@@ -64,29 +64,5 @@ export default defineConfig({
         ],
       },
     },
-    {
-  resolve: '@rokmohar/medusa-plugin-meilisearch',
-  options: {
-    // REMOVE the 'service' wrapper - configuration goes directly here
-    config: {
-      host: process.env.MEILISEARCH_HOST,
-      apiKey: process.env.MEILISEARCH_API_KEY
-    },
-    settings: {
-      products: {
-        // Remove unnecessary properties that might be causing issues
-        // type: 'products',     // ← Remove this
-        // enabled: true,        // ← Remove this  
-        // fields: ['id', ...],  // ← Remove this
-        indexSettings: {
-          searchableAttributes: ['title', 'description', 'variant_sku'],
-          displayedAttributes: ['id', 'handle', 'title', 'description', 'variant_sku', 'thumbnail'],
-          filterableAttributes: ['id', 'handle'],
-        },
-        primaryKey: 'id',
-      }
-    }
-  }
-},
   ],
 })
