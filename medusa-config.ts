@@ -17,6 +17,8 @@ export default defineConfig({
     workerMode: (process.env.MEDUSA_WORKER_MODE as "shared" | "worker" | "server") || "shared",
     redisUrl: process.env.REDIS_URL,
 
+   
+
     http: {
       storeCors: process.env.STORE_CORS || "*",
       adminCors: process.env.ADMIN_CORS || "*",
@@ -26,7 +28,7 @@ export default defineConfig({
       cookieSecret: process.env.COOKIE_SECRET,
       authMethodsPerActor: {
         user: ["emailpass"],
-        customer: ["emailpass", "google"],
+        customer: ["emailpass", "google"], // Add more OAuth if needed
       },
     },
   },
@@ -53,7 +55,7 @@ export default defineConfig({
               bucket: process.env.MINIO_BUCKET,
               endpoint: process.env.MINIO_ENDPOINT,
               prefix: "TimeLib",
-              download_file_duration: 3600,
+              download_file_duration: 3600, // 1 hour
               additional_client_config: {
                 forcePathStyle: true,
               },
@@ -63,28 +65,28 @@ export default defineConfig({
       },
     },
     {
-      resolve: '@rokmohar/medusa-plugin-meilisearch',
-      options: {
-        service: { // ← This was missing!
-          config: {
-            host: process.env.MEILISEARCH_HOST,
-            apiKey: process.env.MEILISEARCH_API_KEY
-          },
-          settings: {
-            products: {
-              type: 'products',
-              enabled: true,
-              fields: ['id', 'title', 'description', 'handle', 'variant_sku', 'thumbnail'],
-              indexSettings: {
-                searchableAttributes: ['title', 'description', 'variant_sku'],
-                displayedAttributes: ['id', 'handle', 'title', 'description', 'variant_sku', 'thumbnail'],
-                filterableAttributes: ['id', 'handle'],
-              },
-              primaryKey: 'id',
-            }
-          }
-        }
+  resolve: '@rokmohar/medusa-plugin-meilisearch',
+  options: {
+    // REMOVE the 'service' wrapper - configuration goes directly here
+    config: {
+      host: process.env.MEILISEARCH_HOST,
+      apiKey: process.env.MEILISEARCH_API_KEY
+    },
+    settings: {
+      products: {
+        // Remove unnecessary properties that might be causing issues
+        // type: 'products',     // ← Remove this
+        // enabled: true,        // ← Remove this  
+        // fields: ['id', ...],  // ← Remove this
+        indexSettings: {
+          searchableAttributes: ['title', 'description', 'variant_sku'],
+          displayedAttributes: ['id', 'handle', 'title', 'description', 'variant_sku', 'thumbnail'],
+          filterableAttributes: ['id', 'handle'],
+        },
+        primaryKey: 'id',
       }
     }
+  }
+},
   ],
 })
