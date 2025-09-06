@@ -31,7 +31,7 @@ export default async function orderPlacedHandler({
   const emailService = new EmailService()
 
   console.log("order: ", order)
-  const sendEmail = "oumarubah12345@gmail.com"
+  const sendEmail = "bahoumar654321@gmail.com"
   try {
     await emailService.sendOrderConfirmation(sendEmail, order)
     logger.info(`Order confirmation email sent to ${sendEmail}`)
