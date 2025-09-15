@@ -34,36 +34,36 @@ export default defineConfig({
   },
 
   modules: [
-    // {
-    //   resolve: "@medusajs/medusa/cache-redis",
-    //   options: {
-    //     redisUrl: process.env.CACHE_REDIS_URL || process.env.REDIS_URL,
-    //   },
-    // },
-    // {
-    //   resolve: "@medusajs/medusa/file",
-    //   options: {
-    //     providers: [
-    //       {
-    //         resolve: "@medusajs/medusa/file-s3",
-    //         id: "s3",
-    //         options: {
-    //           file_url: process.env.MINIO_FILE_URL,
-    //           access_key_id: process.env.MINIO_ACCESS_KEY,
-    //           secret_access_key: process.env.MINIO_SECRET_KEY,
-    //           region: process.env.MINIO_REGION,
-    //           bucket: process.env.MINIO_BUCKET,
-    //           endpoint: process.env.MINIO_ENDPOINT,
-    //           prefix: "TimeLib",
-    //           download_file_duration: 3600, // 1 hour
-    //           additional_client_config: {
-    //             forcePathStyle: true,
-    //           },
-    //         },
-    //       },
-    //     ],
-    //   },
-    // },
+    {
+      resolve: "@medusajs/medusa/cache-redis",
+      options: {
+        redisUrl: process.env.CACHE_REDIS_URL || process.env.REDIS_URL,
+      },
+    },
+    {
+      resolve: "@medusajs/medusa/file",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/file-s3",
+            id: "s3",
+            options: {
+              file_url: process.env.MINIO_FILE_URL,
+              access_key_id: process.env.MINIO_ACCESS_KEY,
+              secret_access_key: process.env.MINIO_SECRET_KEY,
+              region: process.env.MINIO_REGION,
+              bucket: process.env.MINIO_BUCKET,
+              endpoint: process.env.MINIO_ENDPOINT,
+              prefix: "TimeLib",
+              download_file_duration: 3600, // 1 hour
+              additional_client_config: {
+                forcePathStyle: true,
+              },
+            },
+          },
+        ],
+      },
+    },
   ],
 })
 
