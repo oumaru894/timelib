@@ -12,6 +12,17 @@ import {
 import { HttpTypes } from '@medusajs/framework/types';
 import EmailLayout, { EmailLayoutProps } from './components/EmailLayout';
 
+type OrderItem = Pick<
+  HttpTypes.AdminOrder['items'][number],
+  | 'id'
+  | 'thumbnail'
+  | 'product_title'
+  | 'variant_title'
+  | 'total'
+  | 'quantity'
+  | 'variant_option_values'
+>;
+
 type Props = {
   order: Pick<
     HttpTypes.AdminOrder,
@@ -24,17 +35,31 @@ type Props = {
     | 'total'
     | 'tax_total'
   > & {
-    items: Pick<
-      HttpTypes.AdminOrder['items'][number],
-      | 'id'
-      | 'thumbnail'
-      | 'product_title'
-      | 'variant_title'
-      | 'total'
-      | 'quantity'
-      | 'variant_option_values'
-    >[];
+    items: OrderItem[];
   };
+};
+
+// Helper function to safely format address
+const formatAddress = (address: HttpTypes.AdminOrder['shipping_address'] | null) => {
+  if (!address) {
+    return [];
+  }
+
+  const lines = [
+    [address.first_name, address.last_name].filter(Boolean).join(' '),
+    address.address_1,
+    address.address_2,
+    [address.postal_code, address.city].filter(Boolean).join(' '),
+    address.province,
+    address.country?.display_name,
+  ].filter(Boolean) as string[];
+
+  return lines;
+};
+
+// Helper function to get phone number safely
+const getPhone = (address: HttpTypes.AdminOrder['shipping_address'] | null) => {
+  return address?.phone || null;
 };
 
 export default function OrderPlacedEmail({
@@ -47,11 +72,17 @@ export default function OrderPlacedEmail({
     currency: order.currency_code,
   });
 
-  const arr = [];
+  // Create array with proper typing
+  const arr: OrderItem[] = [];
   arr.push(...order.items);
   arr.push(...order.items);
   arr.push(...order.items);
   arr.push(...order.items);
+
+  const shippingAddressLines = formatAddress(order.shipping_address);
+  const billingAddressLines = formatAddress(order.billing_address);
+  const shippingPhone = getPhone(order.shipping_address);
+  const billingPhone = getPhone(order.billing_address);
 
   return (
     <EmailLayout {...emailLayoutProps}>
@@ -73,33 +104,14 @@ export default function OrderPlacedEmail({
             <Text className="text-grayscale-500 !mt-0 !mb-8">
               Delivery Address
             </Text>
-            <Text className="m-0 leading-tight">
-              {[
-                order.shipping_address.first_name,
-                order.shipping_address.last_name,
-              ]
-                .filter(Boolean)
-                .join(' ')}
-            </Text>
-            <Text className="m-0 leading-tight">
-              {[
-                order.shipping_address.address_1,
-                order.shipping_address.address_2,
-                [
-                  order.shipping_address.postal_code,
-                  order.shipping_address.city,
-                ]
-                  .filter(Boolean)
-                  .join(' '),
-                order.shipping_address.province,
-                order.shipping_address.country.display_name,
-              ]
-                .filter(Boolean)
-                .join(', ')}
-            </Text>
-            {order.shipping_address.phone && (
+            {shippingAddressLines.map((line, index) => (
+              <Text key={index} className="m-0 leading-tight">
+                {line}
+              </Text>
+            ))}
+            {shippingPhone && (
               <Text className="m-0 leading-tight">
-                {order.shipping_address.phone}
+                {shippingPhone}
               </Text>
             )}
           </Column>
@@ -108,30 +120,14 @@ export default function OrderPlacedEmail({
             <Text className="text-grayscale-500 !mt-0 !mb-8">
               Billing Address
             </Text>
-            <Text className="m-0 leading-tight">
-              {[
-                order.billing_address.first_name,
-                order.billing_address.last_name,
-              ]
-                .filter(Boolean)
-                .join(' ')}
-            </Text>
-            <Text className="m-0 leading-tight">
-              {[
-                order.billing_address.address_1,
-                order.billing_address.address_2,
-                [order.billing_address.postal_code, order.billing_address.city]
-                  .filter(Boolean)
-                  .join(' '),
-                order.billing_address.province,
-                order.billing_address.country.display_name,
-              ]
-                .filter(Boolean)
-                .join(', ')}
-            </Text>
-            {order.billing_address.phone && (
+            {billingAddressLines.map((line, index) => (
+              <Text key={index} className="m-0 leading-tight">
+                {line}
+              </Text>
+            ))}
+            {billingPhone && (
               <Text className="m-0 leading-tight">
-                {order.billing_address.phone}
+                {billingPhone}
               </Text>
             )}
           </Column>
@@ -139,8 +135,24 @@ export default function OrderPlacedEmail({
       </Section>
       <Section className="border border-solid border-grayscale-200 rounded-xs px-4 mb-6">
         {arr.map((item, index) => {
+          const variantOptions = Object.entries(item.variant_option_values || {}).flatMap(
+            ([key, value]) =>
+              typeof value === 'string' ? (
+                <Row key={key}>
+                  <Column className="flex">
+                    <Text className="text-grayscale-500 m-0 text-xs">
+                      {key}:
+                    </Text>
+                    <Text className="m-0 text-xs ml-2">{value}</Text>
+                  </Column>
+                </Row>
+              ) : (
+                []
+              )
+          );
+
           return (
-            <>
+            <div key={`${item.id}-${index}`}>
               {index > 0 && (
                 <Hr className="border-t border-solid border-grayscale-100 m-0" />
               )}
@@ -148,8 +160,8 @@ export default function OrderPlacedEmail({
                 <Column>
                   <Link href="/">
                     <Img
-                      src={item.thumbnail}
-                      alt={item.product_title}
+                      src={item.thumbnail || ''}
+                      alt={item.product_title || 'Product image'}
                       className="aspect-[3/4] object-cover max-w-37 float-left"
                     />
                   </Link>
@@ -159,21 +171,7 @@ export default function OrderPlacedEmail({
                     {item.product_title}
                   </Text>
                   <Section className="mb-1">
-                    {Object.entries(item.variant_option_values).flatMap(
-                      ([key, value]) =>
-                        typeof value === 'string' ? (
-                          <Row key={key}>
-                            <Column className="flex">
-                              <Text className="text-grayscale-500 m-0 text-xs">
-                                {key}:
-                              </Text>
-                              <Text className="m-0 text-xs ml-2">{value}</Text>
-                            </Column>
-                          </Row>
-                        ) : (
-                          []
-                        )
-                    )}
+                    {variantOptions}
                     <Row className="absolute bottom-0">
                       <Column className="flex">
                         <Text className="text-grayscale-500 m-0 text-xs">
@@ -192,7 +190,7 @@ export default function OrderPlacedEmail({
                   </Text>
                 </Column>
               </Row>
-            </>
+            </div>
           );
         })}
       </Section>
