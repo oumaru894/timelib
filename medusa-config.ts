@@ -64,6 +64,38 @@ export default defineConfig({
         ],
       },
     },
+    {
+      resolve: '@medusajs/medusa/notification',
+      options: {
+        providers: [
+          {
+            resolve: './src/modules/resend',
+            id: 'resend',
+            options: {
+              channels: ['email'],
+              api_key: process.env.RESEND_API_KEY,
+              from: "TimeLib <order@timelib.com>",
+              siteTitle: 'TimeLib',
+              companyName: 'TimeLib',
+              footerLinks: [
+                {
+                  url: 'https://imelib.com',
+                  label: 'TimeLib',
+                },
+                {
+                  url: 'https://instagram.com/timelib1/',
+                  label: 'Instagram',
+                },
+                {
+                  url: 'https://facebook.com/timelib/',
+                  label: 'Facebook',
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
   ],
 })
 
