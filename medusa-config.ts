@@ -41,6 +41,9 @@ export default defineConfig({
       },
     },
     {
+      resolve: "./src/modules/availability",
+    },
+    {
       resolve: "@medusajs/medusa/file",
       options: {
         providers: [
