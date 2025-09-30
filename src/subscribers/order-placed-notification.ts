@@ -61,12 +61,34 @@ console.log(`🟢 order.placed event received for order id: ${data.id}`);
     filters: { id: order.customer_id },
   });
 
-  await notificationModuleService.createNotifications({
-    to: 'oumarubah12345@gmail.com',
-    channel: 'email',
-    template: 'order-placed',
-    data: { order, customer },
-  });
+  // In your subscriber
+await notificationModuleService.createNotifications({
+  to: 'oumarubah12345@gmail.com',
+  channel: 'email',
+  template: 'order-placed',
+  data: { 
+    order: {
+      id: order.id,
+      total: order.total?.toString(), // Convert numbers to strings
+      currency_code: order.currency_code,
+      email: order.email,
+      // Only include the specific fields you need
+      shipping_address: order.shipping_address,
+      billing_address: order.billing_address,
+      items: order.items?.map(item => ({
+        title: item.title,
+        quantity: item.quantity?.toString(),
+        total: item.total?.toString(),
+        // Include only what you need, convert numbers to strings
+      }))
+    },
+    customer: {
+      first_name: customer.first_name,
+      last_name: customer.last_name,
+      email: customer.email,
+    }
+  },
+});
 }
 
 export const config: SubscriberConfig = {
