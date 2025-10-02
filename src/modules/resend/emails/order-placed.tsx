@@ -16,7 +16,7 @@ type OrderItem = Pick<
   HttpTypes.AdminOrder['items'][number],
   | 'id'
   | 'thumbnail'
-  | 'title'
+  | 'product_title'
   | 'variant_title'
   | 'total'
   | 'quantity'
@@ -76,16 +76,16 @@ export default function OrderPlacedEmail({
   // Create array with proper typing
   const arr: OrderItem[] = [];
   arr.push(...order.items);
-  // arr.push(...order.items);
-  // arr.push(...order.items);
-  // arr.push(...order.items);
+  arr.push(...order.items);
+  arr.push(...order.items);
+  arr.push(...order.items);
 
   const shippingAddressLines = formatAddress(order.shipping_address);
   const billingAddressLines = formatAddress(order.billing_address);
   const shippingPhone = getPhone(order.shipping_address);
   const billingPhone = getPhone(order.billing_address);
 
-  //console.log("order items", arr)
+  console.log("order items", arr)
   return (
     <EmailLayout {...emailLayoutProps}>
       <Heading className="text-2xl font-medium mt-0 mb-10">
@@ -163,14 +163,14 @@ export default function OrderPlacedEmail({
                   <Link href="/">
                     <Img
                       src={item.thumbnail || ''}
-                      alt={item.title || 'Product image'}
+                      alt={item.product_title || 'Product image'}
                       className="aspect-[3/4] object-cover max-w-37 float-left"
                     />
                   </Link>
                 </Column>
                 <Column className="w-full pl-8 relative" valign="top">
                   <Text className="text-md !mt-0 !mb-2">
-                    {item.title}
+                    {item.product_title}
                   </Text>
                   <Section className="mb-1">
                     {variantOptions}
