@@ -76,9 +76,9 @@ export default function OrderPlacedEmail({
   // Create array with proper typing
   const arr: OrderItem[] = [];
   arr.push(...order.items);
-  arr.push(...order.items);
-  arr.push(...order.items);
-  arr.push(...order.items);
+  // arr.push(...order.items);
+  // arr.push(...order.items);
+  // arr.push(...order.items);
 
   const shippingAddressLines = formatAddress(order.shipping_address);
   const billingAddressLines = formatAddress(order.billing_address);
