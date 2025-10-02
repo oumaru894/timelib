@@ -16,7 +16,7 @@ type OrderItem = Pick<
   HttpTypes.AdminOrder['items'][number],
   | 'id'
   | 'thumbnail'
-  | 'product_title'
+  | 'title'
   | 'variant_title'
   | 'total'
   | 'quantity'
@@ -163,14 +163,14 @@ export default function OrderPlacedEmail({
                   <Link href="/">
                     <Img
                       src={item.thumbnail || ''}
-                      alt={item.product_title || 'Product image'}
+                      alt={item.title || 'Product image'}
                       className="aspect-[3/4] object-cover max-w-37 float-left"
                     />
                   </Link>
                 </Column>
                 <Column className="w-full pl-8 relative" valign="top">
                   <Text className="text-md !mt-0 !mb-2">
-                    {item.product_title}
+                    {item.title}
                   </Text>
                   <Section className="mb-1">
                     {variantOptions}
@@ -308,7 +308,7 @@ OrderPlacedEmail.PreviewProps = {
         id: '1',
         thumbnail:
           'https://fashion-starter-demo.s3.eu-central-1.amazonaws.com/belime-estate-01JAR3JYD68D1YYR0BN7HHMAZE.png',
-        product_title: 'Belime Estate',
+        title: 'Belime Estate',
         variant_title: 'Linen / Red',
         total: 1500,
         quantity: 1,
