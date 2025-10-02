@@ -16,7 +16,7 @@ type OrderItem = Pick<
   HttpTypes.AdminOrder['items'][number],
   | 'id'
   | 'thumbnail'
-  | 'product_title'
+  | 'title'
   | 'variant_title'
   | 'total'
   | 'quantity'
