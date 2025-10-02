@@ -34,6 +34,7 @@ type Props = {
     | 'subtotal'
     | 'total'
     | 'tax_total'
+    | 'display_id'
   > & {
     items: OrderItem[];
   };
@@ -75,15 +76,16 @@ export default function OrderPlacedEmail({
   // Create array with proper typing
   const arr: OrderItem[] = [];
   arr.push(...order.items);
-  arr.push(...order.items);
-  arr.push(...order.items);
-  arr.push(...order.items);
+  // arr.push(...order.items);
+  // arr.push(...order.items);
+  // arr.push(...order.items);
 
   const shippingAddressLines = formatAddress(order.shipping_address);
   const billingAddressLines = formatAddress(order.billing_address);
   const shippingPhone = getPhone(order.shipping_address);
   const billingPhone = getPhone(order.billing_address);
 
+  //console.log("order items", arr)
   return (
     <EmailLayout {...emailLayoutProps}>
       <Heading className="text-2xl font-medium mt-0 mb-10">
@@ -91,7 +93,7 @@ export default function OrderPlacedEmail({
       </Heading>
       <Text className="text-md !mb-6">
         We are pleased to confirm that your order has been successfully placed
-        and will be processed shortly. Your order number is #100002.
+        and will be processed shortly. Your order number is {order.display_id}.
       </Text>
       <Text className="text-md !mb-6">
         You&apos;ll receive another update once your order is shipped. For any
@@ -161,14 +163,14 @@ export default function OrderPlacedEmail({
                   <Link href="/">
                     <Img
                       src={item.thumbnail || ''}
-                      alt={item.product_title || 'Product image'}
+                      alt={item.title || 'Product image'}
                       className="aspect-[3/4] object-cover max-w-37 float-left"
                     />
                   </Link>
                 </Column>
                 <Column className="w-full pl-8 relative" valign="top">
                   <Text className="text-md !mt-0 !mb-2">
-                    {item.product_title}
+                    {item.title}
                   </Text>
                   <Section className="mb-1">
                     {variantOptions}
