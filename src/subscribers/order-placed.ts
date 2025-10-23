@@ -1,6 +1,5 @@
 import type { SubscriberArgs, SubscriberConfig } from '@medusajs/medusa';
 import { ContainerRegistrationKeys, Modules } from '@medusajs/framework/utils';
-import { log } from 'console';
 
 export default async function sendOrderConfirmationHandler({
   event: { data },
@@ -8,7 +7,9 @@ export default async function sendOrderConfirmationHandler({
 }: SubscriberArgs<{ id: string }>) {
   const query = container.resolve(ContainerRegistrationKeys.QUERY);
   const notificationModuleService = container.resolve(Modules.NOTIFICATION);
-console.log(`🟢 order.placed event received for order id: ${data.id}`);
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER);
+  console.log('🟢 Order placed event data:', data);
+  logger.info(`🟢 order.placed event received for order id: ${data.id}`);
   const {
     data: [order],
   } = await query.graph({
@@ -94,3 +95,5 @@ await notificationModuleService.createNotifications({
 export const config: SubscriberConfig = {
   event: "order.placed",
 };
+
+

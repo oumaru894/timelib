@@ -606,8 +606,8 @@ export default function OrderPlacedEmail({
   const billingAddressLines = formatAddress(order.billing_address);
   const shippingPhone = getPhone(order.shipping_address);
   const billingPhone = getPhone(order.billing_address);
+  //console.log('order', order);
 
-  console.log("order items", arr)
   return (
     <EmailLayout {...emailLayoutProps}>
       <Heading className="text-2xl font-medium mt-0 mb-10">
