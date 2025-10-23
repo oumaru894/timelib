@@ -37,7 +37,7 @@ export default defineConfig({
     {
       resolve: "@medusajs/medusa/event-bus-redis",
       options: {
-        redisUrl: process.env.REDIS_URL,
+         redisUrl: process.env.EVENTS_REDIS_URL,
       },
     },
     {
