@@ -92,5 +92,5 @@ await notificationModuleService.createNotifications({
 }
 
 export const config: SubscriberConfig = {
-  event: 'order.placed',
+  event: "order.placed",
 };
